@@ -7,13 +7,15 @@
 
 class Driver;
 
-struct TripAction {
-    Trip* trip;
+struct TripAction
+{
+    Trip *trip;
     TripState oldState;
-    Driver* assignedDriver;
+    Driver *assignedDriver;
 };
 
-class RollbackManager {
+class RollbackManager
+{
 private:
     std::vector<TripAction> actionStack;
 
@@ -21,7 +23,7 @@ public:
     RollbackManager();
 
     // Record the current state of a trip before making changes
-    void recordState(Trip* trip);
+    void recordState(Trip *trip);
 
     // Undo the last operation
     bool undoLastOperation();

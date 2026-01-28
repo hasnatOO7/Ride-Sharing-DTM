@@ -4,7 +4,8 @@
 
 City::City() : nextNodeId(0) {}
 
-int City::addLocation(const std::string& name, int zoneID) {
+int City::addLocation(const std::string &name, int zoneID)
+{
     Node newNode;
     newNode.id = nextNodeId;
     newNode.name = name;
@@ -16,11 +17,13 @@ int City::addLocation(const std::string& name, int zoneID) {
     return nextNodeId++;
 }
 
-void City::addRoad(const std::string& locationA, const std::string& locationB, int distance) {
+void City::addRoad(const std::string &locationA, const std::string &locationB, int distance)
+{
     int idA = findNodeByName(locationA);
     int idB = findNodeByName(locationB);
 
-    if (idA == -1 || idB == -1) {
+    if (idA == -1 || idB == -1)
+    {
         std::cerr << "Error: One or both locations not found\n";
         return;
     }
@@ -37,32 +40,40 @@ void City::addRoad(const std::string& locationA, const std::string& locationB, i
     adjacencyList[idB].push_back(edgeB);
 }
 
-int City::findNodeByName(const std::string& name) const {
-    for (size_t i = 0; i < nodes.size(); ++i) {
-        if (nodes[i].name == name) {
+int City::findNodeByName(const std::string &name) const
+{
+    for (size_t i = 0; i < nodes.size(); ++i)
+    {
+        if (nodes[i].name == name)
+        {
             return nodes[i].id;
         }
     }
     return -1;
 }
 
-const Node& City::getNode(int nodeId) const {
+const Node &City::getNode(int nodeId) const
+{
     return nodes[nodeId];
 }
 
-int City::getZoneByName(const std::string& name) const {
+int City::getZoneByName(const std::string &name) const
+{
     int nodeId = findNodeByName(name);
-    if (nodeId != -1) {
+    if (nodeId != -1)
+    {
         return nodes[nodeId].zoneID;
     }
     return -1;
 }
 
-int City::getShortestDistance(const std::string& from, const std::string& to) const {
+int City::getShortestDistance(const std::string &from, const std::string &to) const
+{
     int startId = findNodeByName(from);
     int endId = findNodeByName(to);
 
-    if (startId == -1 || endId == -1) {
+    if (startId == -1 || endId == -1)
+    {
         return -1;
     }
 
@@ -73,30 +84,36 @@ int City::getShortestDistance(const std::string& from, const std::string& to) co
     dist[startId] = 0;
 
     // Process all nodes
-    for (size_t count = 0; count < nodes.size(); ++count) {
+    for (size_t count = 0; count < nodes.size(); ++count)
+    {
         // Find unvisited node with minimum distance
         int minDist = INT_MAX;
         int minNode = -1;
 
-        for (size_t i = 0; i < nodes.size(); ++i) {
-            if (!visited[i] && dist[i] < minDist) {
+        for (size_t i = 0; i < nodes.size(); ++i)
+        {
+            if (!visited[i] && dist[i] < minDist)
+            {
                 minDist = dist[i];
                 minNode = i;
             }
         }
 
-        if (minNode == -1 || minDist == INT_MAX) {
+        if (minNode == -1 || minDist == INT_MAX)
+        {
             break;
         }
 
         visited[minNode] = true;
 
         // Update distances of neighbors
-        for (const Edge& edge : adjacencyList[minNode]) {
+        for (const Edge &edge : adjacencyList[minNode])
+        {
             int neighbor = edge.destination;
             int weight = edge.weight;
 
-            if (!visited[neighbor] && dist[minNode] + weight < dist[neighbor]) {
+            if (!visited[neighbor] && dist[minNode] + weight < dist[neighbor])
+            {
                 dist[neighbor] = dist[minNode] + weight;
             }
         }
@@ -105,6 +122,7 @@ int City::getShortestDistance(const std::string& from, const std::string& to) co
     return dist[endId] == INT_MAX ? -1 : dist[endId];
 }
 
-const std::vector<Node>& City::getAllNodes() const {
+const std::vector<Node> &City::getAllNodes() const
+{
     return nodes;
 }

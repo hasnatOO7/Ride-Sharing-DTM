@@ -3,20 +3,21 @@
 
 #include <string>
 
-class Rider {
+class Rider
+{
 private:
     int id;
     std::string name;
     std::string location;
 
 public:
-    Rider(int id, const std::string& name, const std::string& location);
+    Rider(int id, const std::string &name, const std::string &location);
 
     int getId() const;
-    const std::string& getName() const;
-    const std::string& getLocation() const;
+    const std::string &getName() const;
+    const std::string &getLocation() const;
 
-    void setLocation(const std::string& newLocation);
+    void setLocation(const std::string &newLocation);
 };
 
 #endif // RIDER_H

@@ -3,7 +3,8 @@
 
 #include <string>
 
-class Driver {
+class Driver
+{
 private:
     int id;
     std::string name;
@@ -12,15 +13,15 @@ private:
     bool isAvailable;
 
 public:
-    Driver(int id, const std::string& name, const std::string& location, int zoneID);
+    Driver(int id, const std::string &name, const std::string &location, int zoneID);
 
     int getId() const;
-    const std::string& getName() const;
-    const std::string& getCurrentLocation() const;
+    const std::string &getName() const;
+    const std::string &getCurrentLocation() const;
     int getZoneID() const;
     bool getIsAvailable() const;
 
-    void setCurrentLocation(const std::string& location);
+    void setCurrentLocation(const std::string &location);
     void setZoneID(int zone);
     void setAvailable(bool available);
 };
