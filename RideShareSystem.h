@@ -43,6 +43,7 @@ public:
     // Driver operations
     Driver *addDriver(const std::string &name, const std::string &carModel,
                       const std::string &numberPlate, const std::string &location, int zoneID);
+    Driver *addDriver(const std::string &name, const std::string &location, int zoneID);
 
     // Rider operations
     Rider *addRider(const std::string &name, const std::string &location);
@@ -66,17 +67,7 @@ public:
     const std::vector<Trip *> &getAllTrips() const;
     const std::vector<Driver *> &getAllDrivers() const;
     const std::vector<Rider *> &getAllRiders() const;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     const std::vector<CityInfo> &getAllCities() const;
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    void bookRide(int pickupCityId, int pickupLocationId, int dropoffCityId, int dropoffLocationId, int driverId);
-    void showAvailableDrivers();
 
     // Display helper methods
     void displayAllLocations() const;
@@ -85,7 +76,6 @@ public:
 
     // Utility method
     Trip *findRiderActiveTrip(Rider *rider) const;
->>>>>>> Stashed changes
 };
 
 #endif // RIDESHARESYSTEM_H

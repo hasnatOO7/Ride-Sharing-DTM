@@ -13,8 +13,6 @@ private:
     std::string currentLocation;
     int zoneID;
     bool isAvailable;
-    std::string carModel;
-    std::string numberPlate;
 
 public:
     Driver(int id, const std::string &name, const std::string &carModel,
@@ -26,8 +24,6 @@ public:
     const std::string &getNumberPlate() const;
     const std::string &getCurrentLocation() const;
     int getZoneID() const;
-    const std::string &getCarModel() const;
-    const std::string &getNumberPlate() const;
     bool getIsAvailable() const;
 
     void setCurrentLocation(const std::string &location);

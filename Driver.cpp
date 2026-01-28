@@ -1,24 +1,9 @@
 #include "Driver.h"
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 Driver::Driver(int id, const std::string &name, const std::string &carModel,
                const std::string &numberPlate, const std::string &location, int zoneID)
     : id(id), name(name), carModel(carModel), numberPlate(numberPlate),
       currentLocation(location), zoneID(zoneID), isAvailable(true) {}
-=======
-Driver::Driver(int id, const std::string &name, const std::string &location, int zoneID, const std::string &carModel, const std::string &numberPlate)
-    : id(id), name(name), currentLocation(location), zoneID(zoneID), isAvailable(true), carModel(carModel), numberPlate(numberPlate) {}
->>>>>>> Stashed changes
-=======
-Driver::Driver(int id, const std::string &name, const std::string &location, int zoneID, const std::string &carModel, const std::string &numberPlate)
-    : id(id), name(name), currentLocation(location), zoneID(zoneID), isAvailable(true), carModel(carModel), numberPlate(numberPlate) {}
->>>>>>> Stashed changes
-=======
-Driver::Driver(int id, const std::string &name, const std::string &location, int zoneID, const std::string &carModel, const std::string &numberPlate)
-    : id(id), name(name), currentLocation(location), zoneID(zoneID), isAvailable(true), carModel(carModel), numberPlate(numberPlate) {}
->>>>>>> Stashed changes
 
 int Driver::getId() const
 {
@@ -48,16 +33,6 @@ const std::string &Driver::getCurrentLocation() const
 int Driver::getZoneID() const
 {
     return zoneID;
-}
-
-const std::string &Driver::getCarModel() const
-{
-    return carModel;
-}
-
-const std::string &Driver::getNumberPlate() const
-{
-    return numberPlate;
 }
 
 bool Driver::getIsAvailable() const
