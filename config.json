@@ -1,0 +1,56 @@
+{
+    "projectName": "Ride-Sharing Dispatch & Trip Management System",
+    "version": "1.0.0",
+    "description": "A complete C++ ride-sharing system with real-time dispatch, driver management, and trip tracking",
+    "compiler": "g++ (MinGW)",
+    "cppStandard": "C++11",
+    "buildCommand": "g++ -std=c++11 -Wall -g -o RideShareSystem.exe *.cpp",
+    "runCommand": "./RideShareSystem.exe",
+    "debugger": "gdb",
+    "sourceFiles": [
+        "main.cpp",
+        "City.cpp",
+        "Driver.cpp",
+        "Rider.cpp",
+        "Trip.cpp",
+        "DispatchEngine.cpp",
+        "RollbackManager.cpp",
+        "RideShareSystem.cpp"
+    ],
+    "headerFiles": [
+        "City.h",
+        "Driver.h",
+        "Rider.h",
+        "Trip.h",
+        "DispatchEngine.h",
+        "RollbackManager.h",
+        "RideShareSystem.h"
+    ],
+    "features": {
+        "graphAlgorithm": "Dijkstra's Shortest Path (Custom Implementation)",
+        "dataStructures": [
+            "Custom Adjacency List (no STL maps)",
+            "Vector-based storage",
+            "Stack-based undo system"
+        ],
+        "designPatterns": [
+            "Facade Pattern (RideShareSystem)",
+            "State Pattern (Trip states)",
+            "Command Pattern (Trip actions)"
+        ],
+        "zones": 3,
+        "locations": 8,
+        "drivers": 5
+    },
+    "debuggingTips": {
+        "breakpoints": "Set breakpoints in VS Code by clicking on line numbers",
+        "variables": "View variables in the Debug panel on the left",
+        "console": "Use the Debug Console for runtime inspection",
+        "stepThrough": "Press F10 to step over, F11 to step into functions"
+    },
+    "buildInstructions": {
+        "step1": "Open terminal in VS Code (Ctrl+`)",
+        "step2": "Run: g++ -std=c++11 -Wall -g -o RideShareSystem.exe *.cpp",
+        "step3": "Debug with F5 or run with Ctrl+F5"
+    }
+}

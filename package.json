@@ -1,0 +1,59 @@
+{
+    "name": "RideShareSystem",
+    "version": "1.0.0",
+    "description": "Ride-Sharing Dispatch & Trip Management System",
+    "main": "main.cpp",
+    "scripts": {
+        "build": "g++ -std=c++11 -Wall -g -o RideShareSystem.exe *.cpp",
+        "run": "./RideShareSystem.exe",
+        "debug": "gdb ./RideShareSystem.exe",
+        "clean": "del RideShareSystem.exe"
+    },
+    "keywords": [
+        "ride-sharing",
+        "dispatch",
+        "trip-management",
+        "dijkstra",
+        "c++"
+    ],
+    "author": "C++ Expert",
+    "license": "MIT",
+    "projectStructure": {
+        "core": [
+            "City.h/cpp - Graph implementation with Dijkstra's algorithm",
+            "Driver.h/cpp - Driver management and state",
+            "Rider.h/cpp - Rider/passenger management",
+            "Trip.h/cpp - Trip state machine with enum states"
+        ],
+        "business": [
+            "DispatchEngine.h/cpp - Intelligent driver assignment with cost formula",
+            "RollbackManager.h/cpp - Stack-based undo/rollback system"
+        ],
+        "system": [
+            "RideShareSystem.h/cpp - Facade managing all components",
+            "main.cpp - Interactive user interface"
+        ]
+    },
+    "systemFeatures": {
+        "locations": 8,
+        "zones": 3,
+        "drivers": 5,
+        "algorithms": [
+            "Dijkstra's Shortest Path (O(V²) complexity)",
+            "Cost-based driver dispatch (distance + zone penalty)"
+        ],
+        "constraints": [
+            "No STL maps (vector-based linear search)",
+            "No external graph libraries (custom adjacency list)",
+            "No global variables",
+            "C++11 compatible"
+        ]
+    },
+    "menuOptions": {
+        "1": "Book a Ride - Request ride with pickup/dropoff locations",
+        "2": "Cancel a Trip - Cancel an active trip by ID",
+        "3": "Undo Last Action - Rollback last operation",
+        "4": "View System Status - See all trips and drivers",
+        "5": "Exit - Close the application"
+    }
+}

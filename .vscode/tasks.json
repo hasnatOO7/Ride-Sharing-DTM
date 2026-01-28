@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build RideShareSystem",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++11",
+                "-Wall",
+                "-g",
+                "-o",
+                "RideShareSystem.exe",
+                "City.cpp",
+                "Driver.cpp",
+                "Rider.cpp",
+                "Trip.cpp",
+                "DispatchEngine.cpp",
+                "RollbackManager.cpp",
+                "RideShareSystem.cpp",
+                "main.cpp"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Clean Build",
+            "type": "shell",
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-Command",
+                    "if (Test-Path RideShareSystem.exe) { Remove-Item RideShareSystem.exe }; g++ -std=c++11 -Wall -g -o RideShareSystem.exe City.cpp Driver.cpp Rider.cpp Trip.cpp DispatchEngine.cpp RollbackManager.cpp RideShareSystem.cpp main.cpp"
+                ]
+            },
+            "group": {
+                "kind": "build"
+            },
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Run RideShareSystem",
+            "type": "shell",
+            "command": "${workspaceFolder}/RideShareSystem.exe",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "dependsOn": [
+                "Build RideShareSystem"
+            ]
+        }
+    ]
+}

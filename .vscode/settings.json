@@ -1,0 +1,18 @@
+{
+    "C_Cpp.default.cppStandard": "c++11",
+    "C_Cpp.default.cLanguageStandard": "c11",
+    "C_Cpp.default.compilerPath": "g++.exe",
+    "C_Cpp.default.intelliSenseEngine": "default",
+    "C_Cpp.formatting": "clangFormat",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "files.exclude": {
+        "**/*.o": true,
+        "**/*.exe": false,
+        "**/build": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/build": true
+    }
+}
