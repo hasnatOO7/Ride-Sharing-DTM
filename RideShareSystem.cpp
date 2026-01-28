@@ -56,7 +56,7 @@ Rider *RideShareSystem::addRider(const std::string &name, const std::string &loc
     return newRider;
 }
 
-Trip *RideShareSystem::requestTrip(Rider *rider, const std::string &pickup, const std::string &dropoff)
+Trip *RideShareSystem::requestTrip(Rider *rider, const std::string &pickup, const std::string &dropoff, Driver *manualDriver)
 {
     if (!rider)
     {
@@ -71,8 +71,18 @@ Trip *RideShareSystem::requestTrip(Rider *rider, const std::string &pickup, cons
     // Record initial state
     rollbackManager.recordState(newTrip);
 
-    // Find and assign nearest available driver
-    Driver *assignedDriver = dispatchEngine.findNearestDriver(city, drivers, pickup);
+    // Assign driver: if a manualDriver was provided, use it and skip search.
+    Driver *assignedDriver = nullptr;
+    if (manualDriver)
+    {
+        assignedDriver = manualDriver;
+        std::cout << "[INFO] Manual override requested. Assigning selected driver.\n";
+    }
+    else
+    {
+        // Find and assign nearest available driver
+        assignedDriver = dispatchEngine.findNearestDriver(city, drivers, pickup);
+    }
 
     if (assignedDriver)
     {
@@ -80,6 +90,11 @@ Trip *RideShareSystem::requestTrip(Rider *rider, const std::string &pickup, cons
         newTrip->setStatus(ASSIGNED);
         assignedDriver->setAvailable(false);
         assignedDriver->setCurrentLocation(pickup);
+
+        if (manualDriver)
+        {
+            std::cout << "Manual Override: Driver " << assignedDriver->getName() << " assigned successfully." << std::endl;
+        }
 
         std::cout << "\n[OK] TRIP BOOKED\n";
         std::cout << "    Trip ID: " << newTrip->getId() << "\n";
@@ -285,16 +300,15 @@ void RideShareSystem::displayLocationsByCity(int cityId) const
 
 void RideShareSystem::displayAvailableDrivers() const
 {
-    std::cout << "\n========== AVAILABLE DRIVERS ==========\n";
-    int driverNum = 1;
+    std::cout << "\n========== AVAILABLE DRIVERS ==========" << std::endl;
     bool found = false;
-
-    for (const Driver *driver : drivers)
+    for (size_t i = 0; i < drivers.size(); ++i)
     {
+        const Driver *driver = drivers[i];
         if (driver->getIsAvailable())
         {
             printf(" %d. %s | %s (%s) | %s\n",
-                   driverNum++,
+                   (int)(i + 1),
                    driver->getName().c_str(),
                    driver->getCarModel().c_str(),
                    driver->getNumberPlate().c_str(),

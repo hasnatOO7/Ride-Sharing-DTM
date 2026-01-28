@@ -48,7 +48,7 @@ public:
     Rider *addRider(const std::string &name, const std::string &location);
 
     // Trip operations
-    Trip *requestTrip(Rider *rider, const std::string &pickup, const std::string &dropoff);
+    Trip *requestTrip(Rider *rider, const std::string &pickup, const std::string &dropoff, Driver *manualDriver = nullptr);
     bool completeTrip(Trip *trip);
     bool cancelTrip(Trip *trip);
     bool undoLastAction();
