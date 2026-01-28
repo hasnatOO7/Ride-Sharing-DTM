@@ -82,6 +82,9 @@ void setupFleet(RideShareSystem &system)
 
     // Step 3: Setup booking flow
     // (Implement booking logic here)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
