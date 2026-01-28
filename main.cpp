@@ -14,6 +14,7 @@ void setupFleet(RideShareSystem &system)
 {
     std::cout << "\n[SETUP] Registering 10 Drivers...\n";
 
+<<<<<<< Updated upstream
     // Register 10 drivers with name, car model, number plate, location, and zone
     system.addDriver("Driver Ahmed", "Toyota Corolla", "LEA-123", "Kalma Chowk", 1);
     system.addDriver("Driver Hassan", "Honda City", "LEA-456", "Blue Area", 2);
@@ -27,10 +28,66 @@ void setupFleet(RideShareSystem &system)
     system.addDriver("Driver Saira", "Toyota Yaris", "LEA-567", "DHA", 1);
 
     std::cout << "[OK] Fleet registered successfully!\n\n";
+=======
+    // Step 1: Add 8 locations with 3 zones
+    // Zone 1: Lahore
+    system.addLocation("Kalma Chowk", 1);
+    system.addLocation("Liberty", 1);
+    system.addLocation("DHA", 1);
+
+    // Zone 2: Islamabad
+    system.addLocation("Blue Area", 2);
+    system.addLocation("F-10", 2);
+
+    // Zone 3: Karachi
+    system.addLocation("Clifton", 3);
+    system.addLocation("Saddar", 3);
+
+    // Zone 4: Rawalpindi
+    system.addLocation("Murree Road", 4);
+    system.addLocation("Committee Chowk", 4);
+
+    // Zone 5: Faisalabad
+    system.addLocation("D Ground", 5);
+    system.addLocation("Samanabad", 5);
+
+    // Zone 6: Multan
+    system.addLocation("Bosan Road", 6);
+    system.addLocation("Nishtar Road", 6);
+
+    // Zone 7: Hafizabad
+    system.addLocation("Hafizabad Chowk", 7);
+    system.addLocation("Sadar Bazar", 7);
+
+    // Zone 8: Okara
+    system.addLocation("Okara Bypass", 8);
+    system.addLocation("Sadar Okara", 8);
+
+    std::cout << "[OK] Added 8 locations across 8 zones\n";
+
+    // Step 2: Add hardcoded drivers
+    std::cout << "Registering drivers...\n";
+    system.addDriver("Driver Ahmed", "Kalma Chowk", 1);
+    system.addDriver("Driver Bilal", "Blue Area", 2);
+    system.addDriver("Driver Sara", "Clifton", 3);
+    system.addDriver("Driver Ali", "Murree Road", 4);
+    system.addDriver("Driver Fatima", "D Ground", 5);
+    system.addDriver("Driver Usman", "Bosan Road", 6);
+    system.addDriver("Driver Zain", "Hafizabad Chowk", 7);
+    system.addDriver("Driver Aisha", "Okara Bypass", 8);
+    system.addDriver("Driver Kamran", "Liberty", 1);
+    system.addDriver("Driver Nida", "F-10", 2);
+
+    std::cout << "[OK] Registered 10 drivers\n";
+
+    // Step 3: Setup booking flow
+    // (Implement booking logic here)
+>>>>>>> Stashed changes
 }
 
 void displayMainMenu()
 {
+<<<<<<< Updated upstream
     std::cout << "\n=========================================\n";
     std::cout << "   RIDE-SHARING SYSTEM - MAIN MENU\n";
     std::cout << "=========================================\n";
@@ -43,6 +100,45 @@ void displayMainMenu()
     std::cout << "Enter your choice (1-5): ";
 }
 
+=======
+    // Check against all valid locations (Zone 1, 2, 3)
+    const std::vector<std::string> validLocations = {
+        "Kalma Chowk", "Liberty", "DHA",
+        "Blue Area", "F-10",
+        "Clifton", "Saddar",
+        "Murree Road", "Committee Chowk",
+        "D Ground", "Samanabad",
+        "Bosan Road", "Nishtar Road",
+        "Hafizabad Chowk", "Sadar Bazar",
+        "Okara Bypass", "Sadar Okara"};
+
+    for (const std::string &loc : validLocations)
+    {
+        if (loc == location)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void displayValidLocations()
+{
+    std::cout << "\nValid locations:\n";
+    std::cout << "  Zone 1: Kalma Chowk, Liberty, DHA\n";
+    std::cout << "  Zone 2: Blue Area, F-10\n";
+    std::cout << "  Zone 3: Clifton, Saddar\n";
+    std::cout << "  Zone 4: Murree Road, Committee Chowk\n";
+    std::cout << "  Zone 5: D Ground, Samanabad\n";
+    std::cout << "  Zone 6: Bosan Road, Nishtar Road\n";
+    std::cout << "  Zone 7: Hafizabad Chowk, Sadar Bazar\n";
+    std::cout << "  Zone 8: Okara Bypass, Sadar Okara\n\n";
+}
+
+// ===========================
+// Interactive Menu Functions
+// ===========================
+>>>>>>> Stashed changes
 void bookRide()
 {
     if (!g_system)

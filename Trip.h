@@ -22,6 +22,7 @@ private:
     int id;
     Rider *rider;
     Driver *driver;
+    int driverId;
     std::string pickup;
     std::string dropoff;
     TripState status;
@@ -29,7 +30,7 @@ private:
     City *city;
 
 public:
-    Trip(int id, Rider *rider, const std::string &pickup, const std::string &dropoff);
+    Trip(int id, Rider *rider, const std::string &pickup, const std::string &dropoff, int driverId);
 
     int getId() const;
     Rider *getRider() const;

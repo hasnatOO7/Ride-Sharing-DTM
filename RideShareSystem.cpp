@@ -406,3 +406,30 @@ std::string RideShareSystem::getLocationById(int cityId, int locationId) const
     }
     return "";
 }
+
+void RideShareSystem::bookRide(int pickupCityId, int pickupLocationId, int dropoffCityId, int dropoffLocationId, int driverId)
+{
+    // Logic to book a ride based on user input
+    // Mark driver as busy
+    if (driverId >= 0 && driverId < drivers.size())
+    {
+        drivers[driverId]->setAvailable(false);
+        std::cout << "Driver " << drivers[driverId]->getName() << " is now busy.\n";
+    }
+    // Maintain trip history
+    Trip *newTrip = new Trip(nextTripId++, riders[driverId], pickupCityId, dropoffCityId);
+    trips.push_back(newTrip);
+    std::cout << "Trip booked successfully!\n";
+}
+
+void RideShareSystem::showAvailableDrivers()
+{
+    std::cout << "Available Drivers:\n";
+    for (int i = 0; i < drivers.size(); ++i)
+    {
+        if (drivers[i]->getIsAvailable())
+        {
+            std::cout << i + 1 << ". " << drivers[i]->getName() << " - " << drivers[i]->getCarModel() << " (" << drivers[i]->getNumberPlate() << ")\n";
+        }
+    }
+}
