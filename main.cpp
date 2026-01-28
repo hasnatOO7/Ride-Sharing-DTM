@@ -123,8 +123,15 @@ void bookRide()
     std::cin >> driverChoice;
     std::cin.ignore();
 
-    Driver *selectedDriver = g_system->getDriverById(driverChoice);
-    if (!selectedDriver)
+    const std::vector<Driver *> &allDrivers = g_system->getAllDrivers();
+    if (driverChoice < 1 || driverChoice > (int)allDrivers.size())
+    {
+        std::cout << "[ERROR] Invalid driver selection.\n";
+        return;
+    }
+
+    Driver *selectedDriver = allDrivers[driverChoice - 1];
+    if (!selectedDriver || !selectedDriver->getIsAvailable())
     {
         std::cout << "[ERROR] Invalid driver selection or driver not available.\n";
         return;
@@ -142,7 +149,7 @@ void bookRide()
     }
 
     Rider *rider = g_system->addRider(riderName, pickupLocation);
-    Trip *trip = g_system->requestTrip(rider, pickupLocation, dropoffLocation);
+    Trip *trip = g_system->requestTrip(rider, pickupLocation, dropoffLocation, selectedDriver);
 
     if (!trip)
     {
