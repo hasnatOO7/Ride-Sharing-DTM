@@ -200,7 +200,6 @@ void bookRide()
     {
         // Calculate and display estimated fare
         double estimatedFare = trip->calculateFare();
-        int etaMinutes = (int)(estimatedFare / 50); // ETA calculation based on fare
 
         // Display professional ride ticket
         std::cout << "\n";
@@ -209,7 +208,6 @@ void bookRide()
         std::cout << "------------------------------------------------\n";
         std::cout << "[>] Driver:      Driver " << selectedDriver->getName() << "\n";
         std::cout << "[>] Car Details: " << selectedDriver->getCarModel() << " (" << selectedDriver->getNumberPlate() << ")\n";
-        std::cout << "[>] ETA:         " << etaMinutes << " Minutes\n";
         std::cout << "[>] Route:       " << pickupLocation << "  -->  " << dropoffLocation << "\n";
         std::cout << "------------------------------------------------\n";
         std::cout << "     Your ride is on the way! Stay safe.      \n";
