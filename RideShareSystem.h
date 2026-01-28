@@ -58,6 +58,7 @@ public:
     void displayCities() const;
     void displayLocationsByCity(int cityId) const;
     void displayAvailableDrivers() const;
+    void displayAvailableDriversWithETA(const std::string &pickupLocation) const;
     Driver *getDriverById(int driverId) const;
     std::string getLocationById(int cityId, int locationId) const;
 

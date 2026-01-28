@@ -4,6 +4,7 @@
 #include "Trip.h"
 #include <iostream>
 #include <cstdio>
+#include <climits>
 
 RideShareSystem::RideShareSystem() : nextDriverId(0), nextRiderId(0), nextTripId(0) {}
 
@@ -321,6 +322,51 @@ void RideShareSystem::displayAvailableDrivers() const
                    driver->getCarModel().c_str(),
                    driver->getNumberPlate().c_str(),
                    driver->getCurrentLocation().c_str());
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        std::cout << " [INFO] No drivers available right now.\n";
+    }
+    std::cout << "======================================\n";
+}
+
+void RideShareSystem::displayAvailableDriversWithETA(const std::string &pickupLocation) const
+{
+    std::cout << "\n========== AVAILABLE DRIVERS ==========" << std::endl;
+    bool found = false;
+    for (size_t i = 0; i < drivers.size(); ++i)
+    {
+        const Driver *driver = drivers[i];
+        if (driver->getIsAvailable())
+        {
+            // Calculate distance from driver's current location to pickup location
+            int distance = city.getShortestDistance(driver->getCurrentLocation(), pickupLocation);
+
+            // If path not found, skip this driver or mark as unavailable
+            if (distance == INT_MAX || distance < 0)
+            {
+                printf(" %d. %s (Unavailable) | %s (%s) | %s\n",
+                       (int)(i + 1),
+                       driver->getName().c_str(),
+                       driver->getCarModel().c_str(),
+                       driver->getNumberPlate().c_str(),
+                       driver->getCurrentLocation().c_str());
+            }
+            else
+            {
+                // Calculate ETA: distance in km / 40 km/h * 60 minutes
+                int etaMinutes = (distance / 40.0) * 60;
+                printf(" %d. %s (%d mins away) | %s (%s) | %s\n",
+                       (int)(i + 1),
+                       driver->getName().c_str(),
+                       etaMinutes,
+                       driver->getCarModel().c_str(),
+                       driver->getNumberPlate().c_str(),
+                       driver->getCurrentLocation().c_str());
+            }
             found = true;
         }
     }

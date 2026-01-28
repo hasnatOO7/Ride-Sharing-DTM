@@ -117,7 +117,7 @@ void bookRide()
 
     // Step 5: Show available drivers and select one
     std::cout << "\nSTEP 5: Select Driver\n";
-    g_system->displayAvailableDrivers();
+    g_system->displayAvailableDriversWithETA(pickupLocation);
 
     int driverChoice;
     std::cout << "Enter Driver Number (1-10): ";
