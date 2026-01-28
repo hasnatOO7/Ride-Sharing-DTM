@@ -279,12 +279,71 @@ void RideShareSystem::setupPakistaniCities()
     addLocation("Main Bazaar", 8);
     addLocation("Industrial Area", 8);
 
-    // Add some basic roads between major cities
-    addRoad("Kalma Chowk", "Blue Area", 300);
+    // Add comprehensive roads connecting all 8 cities
+    // Within Zone 1 (Lahore)
+    addRoad("Kalma Chowk", "Liberty", 8);
+    addRoad("Liberty", "DHA", 12);
+    addRoad("Kalma Chowk", "DHA", 15);
+
+    // Within Zone 2 (Islamabad)
+    addRoad("Blue Area", "F-10", 5);
+
+    // Within Zone 3 (Karachi)
     addRoad("Clifton", "Defence", 8);
+    addRoad("Defence", "Saddar", 10);
+    addRoad("Clifton", "Saddar", 15);
+
+    // Within Zone 4 (Rawalpindi)
+    addRoad("Raja Bazaar", "Saddar", 6);
+
+    // Within Zone 5 (Faisalabad)
+    addRoad("Clock Tower", "Iqbal Park", 8);
+
+    // Within Zone 6 (Multan)
+    addRoad("Chowk Bazaar", "Zargarha", 6);
+
+    // Within Zone 7 (Hafizabad)
+    addRoad("City Center", "Bypass", 5);
+
+    // Within Zone 8 (Okara)
+    addRoad("Main Bazaar", "Industrial Area", 8);
+
+    // Inter-city connections (creating a connected network)
+    // Lahore to Islamabad
+    addRoad("Kalma Chowk", "Blue Area", 300);
+    addRoad("Liberty", "F-10", 310);
+
+    // Islamabad to Rawalpindi
+    addRoad("Blue Area", "Raja Bazaar", 50);
+
+    // Lahore to Rawalpindi
+    addRoad("DHA", "Raja Bazaar", 280);
+
+    // Rawalpindi to Faisalabad
+    addRoad("Saddar", "Clock Tower", 220);
+
+    // Lahore to Karachi (long distance)
+    addRoad("Kalma Chowk", "Clifton", 1200);
+
+    // Karachi to Multan
+    addRoad("Saddar", "Chowk Bazaar", 900);
+
+    // Multan to Faisalabad
+    addRoad("Chowk Bazaar", "Clock Tower", 250);
+
+    // Faisalabad to Hafizabad
+    addRoad("Clock Tower", "City Center", 180);
+
+    // Hafizabad to Okara
+    addRoad("City Center", "Main Bazaar", 120);
+
+    // Okara to Multan
+    addRoad("Main Bazaar", "Zargarha", 200);
+
+    // Additional connectivity paths
     addRoad("Liberty", "Saddar", 250);
 
-    std::cout << "[OK] 8 Pakistani cities initialized with 18 locations\n";
+    std::cout << "[OK] 8 Pakistani cities initialized with 18 locations and comprehensive road network\n";
 }
 
 void RideShareSystem::displayCities() const
@@ -324,7 +383,7 @@ void RideShareSystem::displayAvailableDrivers() const
         const Driver *driver = drivers[i];
         if (driver->getIsAvailable())
         {
-            printf(" %d. %s | %s (%s) | %s\n",
+            printf(" %d. Driver %s | %s (%s) | %s\n",
                    (int)(i + 1),
                    driver->getName().c_str(),
                    driver->getCarModel().c_str(),
@@ -356,7 +415,7 @@ void RideShareSystem::displayAvailableDriversWithETA(const std::string &pickupLo
             // If path not found, skip this driver or mark as unavailable
             if (distance == INT_MAX || distance < 0)
             {
-                printf(" %d. %s (Unavailable) | %s (%s) | %s\n",
+                printf(" %d. Driver %s (Unavailable) | %s (%s) | %s\n",
                        (int)(i + 1),
                        driver->getName().c_str(),
                        driver->getCarModel().c_str(),
@@ -367,7 +426,7 @@ void RideShareSystem::displayAvailableDriversWithETA(const std::string &pickupLo
             {
                 // Calculate ETA: distance in km / 40 km/h * 60 minutes
                 int etaMinutes = (distance / 40.0) * 60;
-                printf(" %d. %s (%d mins away) | %s (%s) | %s\n",
+                printf(" %d. Driver %s (%d mins away) | %s (%s) | %s\n",
                        (int)(i + 1),
                        driver->getName().c_str(),
                        etaMinutes,

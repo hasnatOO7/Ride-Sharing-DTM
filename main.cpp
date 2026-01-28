@@ -35,18 +35,18 @@ void setupFleet(RideShareSystem &system)
 
     std::cout << "[OK] Added 17 locations across 8 zones\n";
 
-    // Step 2: Add hardcoded drivers with name, location, and zone
+    // Step 2: Add hardcoded drivers with name, car model, number plate, location, and zone
     std::cout << "Registering drivers...\n";
-    system.addDriver("Driver Ahmed", "Kalma Chowk", 1);
-    system.addDriver("Driver Bilal", "Blue Area", 2);
-    system.addDriver("Driver Sara", "Clifton", 3);
-    system.addDriver("Driver Ali", "Murree Road", 4);
-    system.addDriver("Driver Fatima", "D Ground", 5);
-    system.addDriver("Driver Usman", "Bosan Road", 6);
-    system.addDriver("Driver Zain", "Hafizabad Chowk", 7);
-    system.addDriver("Driver Aisha", "Okara Bypass", 8);
-    system.addDriver("Driver Kamran", "Liberty", 1);
-    system.addDriver("Driver Nida", "F-10", 2);
+    system.addDriver("Ahmed", "Toyota Corolla", "LEA-123", "Kalma Chowk", 1);
+    system.addDriver("Bilal", "Honda Civic", "ISL-456", "Blue Area", 2);
+    system.addDriver("Sara", "Suzuki Alto", "KHI-789", "Clifton", 3);
+    system.addDriver("Ali", "Toyota Prius", "RAW-101", "Raja Bazaar", 4);
+    system.addDriver("Fatima", "Honda City", "FSB-202", "Clock Tower", 5);
+    system.addDriver("Usman", "Hyundai Elantra", "MLT-303", "Chowk Bazaar", 6);
+    system.addDriver("Zain", "KIA Picanto", "HFB-404", "City Center", 7);
+    system.addDriver("Aisha", "Toyota Fortuner", "OKR-505", "Main Bazaar", 8);
+    system.addDriver("Kamran", "Nissan Sunny", "LHR-606", "Liberty", 1);
+    system.addDriver("Nida", "Toyota Yaris", "ISL-707", "F-10", 2);
 
     std::cout << "[OK] Registered 10 drivers\n\n";
 }
