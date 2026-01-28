@@ -5,6 +5,7 @@
 
 class Driver;
 class Rider;
+class City;
 
 enum TripState
 {
@@ -24,6 +25,8 @@ private:
     std::string pickup;
     std::string dropoff;
     TripState status;
+    double fare;
+    City *city;
 
 public:
     Trip(int id, Rider *rider, const std::string &pickup, const std::string &dropoff);
@@ -35,9 +38,15 @@ public:
     const std::string &getDropoff() const;
     TripState getStatus() const;
     std::string getStateString() const;
+    double getFare() const;
 
     void setDriver(Driver *driver);
     void setStatus(TripState newStatus);
+    void setCity(City *cityRef);
+
+    // Fare and receipt methods
+    double calculateFare();
+    void generateReceipt() const;
 };
 
 #endif // TRIP_H

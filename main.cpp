@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cstdio>
+#include <iomanip>
 #include "RideShareSystem.h"
 #include "Driver.h"
 #include "Rider.h"
@@ -155,6 +156,12 @@ void bookRide()
     {
         std::cout << "[ERROR] Failed to create trip.\n";
     }
+    else
+    {
+        // Calculate and display estimated fare
+        double estimatedFare = trip->calculateFare();
+        std::cout << "\n[INFO] Estimated Fare: PKR " << std::fixed << std::setprecision(2) << estimatedFare << "\n\n";
+    }
 }
 
 void viewTripStatus()
@@ -191,7 +198,32 @@ void viewTripStatus()
                trip->getStateString().c_str());
     }
 
-    std::cout << "==========================================\n\n";
+    std::cout << "==========================================\n";
+
+    // Option to complete a trip
+    std::cout << "\nDo you want to complete a trip? (Y/N): ";
+    char choice;
+    std::cin >> choice;
+    std::cin.ignore();
+
+    if (choice == 'Y' || choice == 'y')
+    {
+        std::cout << "\nEnter Trip ID to complete: ";
+        int tripId;
+        std::cin >> tripId;
+        std::cin.ignore();
+
+        for (Trip *trip : trips)
+        {
+            if (trip->getId() == tripId && trip->getStatus() != COMPLETED && trip->getStatus() != CANCELLED)
+            {
+                g_system->completeTrip(trip);
+                return;
+            }
+        }
+        std::cout << "[ERROR] Invalid trip ID or trip already completed/cancelled.\n";
+    }
+    std::cout << "\n";
 }
 
 void cancelTrip()

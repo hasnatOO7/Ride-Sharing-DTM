@@ -66,6 +66,7 @@ Trip *RideShareSystem::requestTrip(Rider *rider, const std::string &pickup, cons
 
     // Create the trip
     Trip *newTrip = new Trip(nextTripId++, rider, pickup, dropoff);
+    newTrip->setCity(&city); // Set city reference for distance calculation
     trips.push_back(newTrip);
 
     // Record initial state
@@ -121,6 +122,9 @@ bool RideShareSystem::completeTrip(Trip *trip)
     // Record state before change
     rollbackManager.recordState(trip);
 
+    // Calculate fare before marking as completed
+    trip->calculateFare();
+
     trip->setStatus(COMPLETED);
 
     Driver *driver = trip->getDriver();
@@ -131,6 +135,10 @@ bool RideShareSystem::completeTrip(Trip *trip)
     }
 
     std::cout << "[OK] Trip #" << trip->getId() << " completed.\n";
+
+    // Generate and display receipt
+    trip->generateReceipt();
+
     return true;
 }
 
