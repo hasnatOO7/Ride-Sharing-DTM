@@ -3,12 +3,30 @@
 #include <vector>
 #include <cstdio>
 #include <iomanip>
+#include <cstdlib>
 #include "RideShareSystem.h"
 #include "Driver.h"
 #include "Rider.h"
 #include "Trip.h"
 
 RideShareSystem *g_system = nullptr;
+
+void clearScreen()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+void displaySnappyHeader()
+{
+    std::cout << " =============================================\n";
+    std::cout << "           S N A P P Y   R I D E S           \n";
+    std::cout << "      Pakistan's #1 Fast Booking System      \n";
+    std::cout << " =============================================\n";
+}
 
 void setupFleet(RideShareSystem &system)
 {
@@ -54,7 +72,7 @@ void setupFleet(RideShareSystem &system)
 void displayMainMenu()
 {
     std::cout << "\n=========================================\n";
-    std::cout << "   RIDE-SHARING SYSTEM - MAIN MENU\n";
+    std::cout << "           MAIN MENU - SELECT ACTION          \n";
     std::cout << "=========================================\n";
     std::cout << " 1. Book a Ride\n";
     std::cout << " 2. View Trip Status\n";
@@ -182,7 +200,21 @@ void bookRide()
     {
         // Calculate and display estimated fare
         double estimatedFare = trip->calculateFare();
-        std::cout << "\n[INFO] Estimated Fare: PKR " << std::fixed << std::setprecision(2) << estimatedFare << "\n\n";
+        int etaMinutes = (int)(estimatedFare / 50); // ETA calculation based on fare
+
+        // Display professional ride ticket
+        std::cout << "\n";
+        std::cout << "------------------------------------------------\n";
+        std::cout << "          RIDE CONFIRMED - SUCCESS!             \n";
+        std::cout << "------------------------------------------------\n";
+        std::cout << "[>] Driver:      Driver " << selectedDriver->getName() << "\n";
+        std::cout << "[>] Car Details: " << selectedDriver->getCarModel() << " (" << selectedDriver->getNumberPlate() << ")\n";
+        std::cout << "[>] ETA:         " << etaMinutes << " Minutes\n";
+        std::cout << "[>] Route:       " << pickupLocation << "  -->  " << dropoffLocation << "\n";
+        std::cout << "------------------------------------------------\n";
+        std::cout << "     Your ride is on the way! Stay safe.      \n";
+        std::cout << "------------------------------------------------\n";
+        std::cout << "[INFO] Estimated Fare: PKR " << std::fixed << std::setprecision(2) << estimatedFare << "\n\n";
     }
 }
 
@@ -320,12 +352,16 @@ int main()
     std::cout << "     Numerical Input Based Booking\n";
     std::cout << "=========================================\n";
 
-    RideShareSystem system;
-    g_system = &system;
+    RideShareSystem rideSystem;
+    g_system = &rideSystem;
 
     // Initialize Pakistani cities and fleet
-    system.setupPakistaniCities();
-    setupFleet(system);
+    rideSystem.setupPakistaniCities();
+    setupFleet(rideSystem);
+
+    // Clear screen and display professional header
+    clearScreen();
+    displaySnappyHeader();
 
     int choice = 0;
     while (true)
@@ -353,11 +389,12 @@ int main()
             break;
 
         case 5:
-            std::cout << "\n=========================================\n";
-            std::cout << "  Thank you for using our service!\n";
-            std::cout << "       Total Trips: " << system.getAllTrips().size() << "\n";
-            std::cout << "       Total Drivers: " << system.getAllDrivers().size() << "\n";
-            std::cout << "=========================================\n\n";
+            std::cout << "\n =============================================\n";
+            std::cout << "   Thank you for using SNAPPY RIDES!          \n";
+            std::cout << " =============================================\n";
+            std::cout << "       Total Trips: " << rideSystem.getAllTrips().size() << "\n";
+            std::cout << "       Total Drivers: " << rideSystem.getAllDrivers().size() << "\n";
+            std::cout << " =============================================\n\n";
             return 0;
 
         default:
