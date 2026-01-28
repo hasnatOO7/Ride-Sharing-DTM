@@ -41,9 +41,10 @@ void RideShareSystem::addRoad(const std::string &locationA, const std::string &l
     city.addRoad(locationA, locationB, distance);
 }
 
-Driver *RideShareSystem::addDriver(const std::string &name, const std::string &location, int zoneID)
+Driver *RideShareSystem::addDriver(const std::string &name, const std::string &carModel,
+                                   const std::string &numberPlate, const std::string &location, int zoneID)
 {
-    Driver *newDriver = new Driver(nextDriverId++, name, location, zoneID);
+    Driver *newDriver = new Driver(nextDriverId++, name, carModel, numberPlate, location, zoneID);
     drivers.push_back(newDriver);
     return newDriver;
 }
@@ -60,15 +61,6 @@ Trip *RideShareSystem::requestTrip(Rider *rider, const std::string &pickup, cons
     if (!rider)
     {
         std::cerr << "Error: Rider is null\n";
-        return nullptr;
-    }
-
-    // Check if rider already has an active trip
-    Trip *existingTrip = findRiderActiveTrip(rider);
-    if (existingTrip)
-    {
-        std::cout << "[ERROR] Rider '" << rider->getName() << "' is already on a trip!\n";
-        std::cout << "        Cannot book another ride. Status: " << existingTrip->getStateString() << "\n";
         return nullptr;
     }
 
@@ -89,12 +81,15 @@ Trip *RideShareSystem::requestTrip(Rider *rider, const std::string &pickup, cons
         assignedDriver->setAvailable(false);
         assignedDriver->setCurrentLocation(pickup);
 
-        std::cout << "[OK] Trip #" << newTrip->getId() << " booked for " << rider->getName()
-                  << "\n     Assigned to: " << assignedDriver->getName() << "\n";
+        std::cout << "\n[OK] TRIP BOOKED\n";
+        std::cout << "    Trip ID: " << newTrip->getId() << "\n";
+        std::cout << "    Driver: " << assignedDriver->getName() << " (" << assignedDriver->getCarModel() << ")\n";
+        std::cout << "    Number Plate: " << assignedDriver->getNumberPlate() << "\n";
+        std::cout << "    Route: " << pickup << " -> " << dropoff << "\n\n";
     }
     else
     {
-        std::cout << "[WARNING] Trip #" << newTrip->getId() << " requested but no drivers available\n";
+        std::cout << "\n[ERROR] No available drivers at the moment!\n\n";
     }
 
     return newTrip;
@@ -120,7 +115,7 @@ bool RideShareSystem::completeTrip(Trip *trip)
         driver->setCurrentLocation(trip->getDropoff());
     }
 
-    std::cout << "Trip #" << trip->getId() << " completed. Status: " << trip->getStateString() << "\n";
+    std::cout << "[OK] Trip #" << trip->getId() << " completed.\n";
     return true;
 }
 
@@ -143,7 +138,7 @@ bool RideShareSystem::cancelTrip(Trip *trip)
         driver->setAvailable(true);
     }
 
-    std::cout << "Trip #" << trip->getId() << " cancelled. Status: " << trip->getStateString() << "\n";
+    std::cout << "[OK] Trip #" << trip->getId() << " cancelled.\n";
     return true;
 }
 
@@ -152,11 +147,11 @@ bool RideShareSystem::undoLastAction()
     bool success = rollbackManager.undoLastOperation();
     if (success)
     {
-        std::cout << "Undo operation completed successfully\n";
+        std::cout << "[OK] Undo completed successfully\n";
     }
     else
     {
-        std::cout << "Undo operation failed - no actions to undo\n";
+        std::cout << "[ERROR] Nothing to undo\n";
     }
     return success;
 }
@@ -176,81 +171,170 @@ const std::vector<Rider *> &RideShareSystem::getAllRiders() const
     return riders;
 }
 
-void RideShareSystem::displayAllLocations() const
+const std::vector<CityInfo> &RideShareSystem::getAllCities() const
 {
-    std::cout << "\n--- Available Locations ---\n";
-    std::cout << "ZONE 1: CityCenter, Mall, RailwayStation\n";
-    std::cout << "ZONE 2: TechPark, University\n";
-    std::cout << "ZONE 3: Airport, Hospital, Suburb\n";
+    return cities;
 }
 
-void RideShareSystem::displayAllRiders() const
+void RideShareSystem::setupPakistaniCities()
 {
-    if (riders.empty())
-    {
-        std::cout << "[INFO] No riders registered yet.\n";
-        return;
-    }
+    std::cout << "\n[SETUP] Initializing Pakistani Cities...\n";
 
-    std::cout << "\n--- Registered Riders ---\n";
-    std::cout << "ID | Name             | Current Location\n";
-    std::cout << "---+------------------+------------------\n";
-    for (const Rider *rider : riders)
-    {
-        printf("%2d | %-16s | %s\n", rider->getId(), rider->getName().c_str(), rider->getLocation().c_str());
-    }
-    std::cout << "\n";
+    // Define 8 Pakistani cities with their locations
+    CityInfo lahore;
+    lahore.cityId = 1;
+    lahore.cityName = "Lahore";
+    lahore.locations = {"Kalma Chowk", "Liberty", "DHA"};
+    cities.push_back(lahore);
+    addLocation("Kalma Chowk", 1);
+    addLocation("Liberty", 1);
+    addLocation("DHA", 1);
+
+    CityInfo islamabad;
+    islamabad.cityId = 2;
+    islamabad.cityName = "Islamabad";
+    islamabad.locations = {"Blue Area", "F-10"};
+    cities.push_back(islamabad);
+    addLocation("Blue Area", 2);
+    addLocation("F-10", 2);
+
+    CityInfo karachi;
+    karachi.cityId = 3;
+    karachi.cityName = "Karachi";
+    karachi.locations = {"Clifton", "Defence", "Saddar"};
+    cities.push_back(karachi);
+    addLocation("Clifton", 3);
+    addLocation("Defence", 3);
+    addLocation("Saddar", 3);
+
+    CityInfo rawalpindi;
+    rawalpindi.cityId = 4;
+    rawalpindi.cityName = "Rawalpindi";
+    rawalpindi.locations = {"Raja Bazaar", "Saddar"};
+    cities.push_back(rawalpindi);
+    addLocation("Raja Bazaar", 4);
+    addLocation("Saddar", 4);
+
+    CityInfo faisalabad;
+    faisalabad.cityId = 5;
+    faisalabad.cityName = "Faisalabad";
+    faisalabad.locations = {"Clock Tower", "Iqbal Park"};
+    cities.push_back(faisalabad);
+    addLocation("Clock Tower", 5);
+    addLocation("Iqbal Park", 5);
+
+    CityInfo multan;
+    multan.cityId = 6;
+    multan.cityName = "Multan";
+    multan.locations = {"Chowk Bazaar", "Zargarha"};
+    cities.push_back(multan);
+    addLocation("Chowk Bazaar", 6);
+    addLocation("Zargarha", 6);
+
+    CityInfo hafizabad;
+    hafizabad.cityId = 7;
+    hafizabad.cityName = "Hafizabad";
+    hafizabad.locations = {"City Center", "Bypass"};
+    cities.push_back(hafizabad);
+    addLocation("City Center", 7);
+    addLocation("Bypass", 7);
+
+    CityInfo okara;
+    okara.cityId = 8;
+    okara.cityName = "Okara";
+    okara.locations = {"Main Bazaar", "Industrial Area"};
+    cities.push_back(okara);
+    addLocation("Main Bazaar", 8);
+    addLocation("Industrial Area", 8);
+
+    // Add some basic roads between major cities
+    addRoad("Kalma Chowk", "Blue Area", 300);
+    addRoad("Clifton", "Defence", 8);
+    addRoad("Liberty", "Saddar", 250);
+
+    std::cout << "[OK] 8 Pakistani cities initialized with 18 locations\n";
 }
 
-Trip *RideShareSystem::findRiderActiveTrip(Rider *rider) const
+void RideShareSystem::displayCities() const
 {
-    if (!rider)
-        return nullptr;
-
-    for (Trip *trip : trips)
+    std::cout << "\n========== CITIES ==========\n";
+    for (const CityInfo &c : cities)
     {
-        if (trip->getRider() == rider)
+        printf(" %d. %-15s\n", c.cityId, c.cityName.c_str());
+    }
+    std::cout << "============================\n";
+}
+
+void RideShareSystem::displayLocationsByCity(int cityId) const
+{
+    for (const CityInfo &c : cities)
+    {
+        if (c.cityId == cityId)
         {
-            TripState status = trip->getStatus();
-            if (status == ASSIGNED || status == ONGOING)
+            std::cout << "\n===== LOCATIONS IN " << c.cityName << " =====\n";
+            for (size_t i = 0; i < c.locations.size(); ++i)
             {
-                return trip;
+                printf(" %d. %s\n", (int)(i + 1), c.locations[i].c_str());
+            }
+            std::cout << "================================\n";
+            return;
+        }
+    }
+    std::cout << "[ERROR] City not found.\n";
+}
+
+void RideShareSystem::displayAvailableDrivers() const
+{
+    std::cout << "\n========== AVAILABLE DRIVERS ==========\n";
+    int driverNum = 1;
+    bool found = false;
+
+    for (const Driver *driver : drivers)
+    {
+        if (driver->getIsAvailable())
+        {
+            printf(" %d. %s | %s (%s) | %s\n",
+                   driverNum++,
+                   driver->getName().c_str(),
+                   driver->getCarModel().c_str(),
+                   driver->getNumberPlate().c_str(),
+                   driver->getCurrentLocation().c_str());
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        std::cout << " [INFO] No drivers available right now.\n";
+    }
+    std::cout << "======================================\n";
+}
+
+Driver *RideShareSystem::getDriverById(int driverId) const
+{
+    int count = 0;
+    for (Driver *driver : drivers)
+    {
+        if (driver->getIsAvailable())
+        {
+            count++;
+            if (count == driverId)
+            {
+                return driver;
             }
         }
     }
     return nullptr;
 }
 
-void RideShareSystem::displayDriverStats() const
+std::string RideShareSystem::getLocationById(int cityId, int locationId) const
 {
-    if (drivers.empty())
+    for (const CityInfo &c : cities)
     {
-        std::cout << "[INFO] No drivers registered.\n";
-        return;
-    }
-
-    std::cout << "\n--- Driver Statistics ---\n";
-    std::cout << "Name           | Location        | Status | Completed\n";
-    std::cout << "---------------+-----------------+--------+----------\n";
-
-    for (const Driver *driver : drivers)
-    {
-        // Count completed trips for this driver
-        int completedTrips = 0;
-        for (const Trip *trip : trips)
+        if (c.cityId == cityId && locationId > 0 && locationId <= (int)c.locations.size())
         {
-            if (trip->getDriver() == driver && trip->getStatus() == COMPLETED)
-            {
-                completedTrips++;
-            }
+            return c.locations[locationId - 1];
         }
-
-        std::string status = driver->getIsAvailable() ? "Free" : "Busy";
-        printf("%-14s | %-15s | %-6s | %d\n",
-               driver->getName().c_str(),
-               driver->getCurrentLocation().c_str(),
-               status.c_str(),
-               completedTrips);
     }
-    std::cout << "\n";
+    return "";
 }

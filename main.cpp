@@ -7,119 +7,132 @@
 #include "Rider.h"
 #include "Trip.h"
 
-// Global system reference for interactive functions
 RideShareSystem *g_system = nullptr;
-std::vector<Rider *> g_riders;
 
-// ===========================
-// Setup Function
-// ===========================
-void setupSystem(RideShareSystem &system)
+void setupFleet(RideShareSystem &system)
 {
-    std::cout << "\n=== Initializing Ride-Sharing System ===\n";
-    std::cout << "Setting up city locations...\n";
+    std::cout << "\n[SETUP] Registering 10 Drivers...\n";
 
-    // Step 1: Add 8 locations with 3 zones
-    // Zone 1: City Center, Downtown areas
-    system.addLocation("CityCenter", 1);
-    system.addLocation("Mall", 1);
-    system.addLocation("RailwayStation", 1);
+    // Register 10 drivers with name, car model, number plate, location, and zone
+    system.addDriver("Driver Ahmed", "Toyota Corolla", "LEA-123", "Kalma Chowk", 1);
+    system.addDriver("Driver Hassan", "Honda City", "LEA-456", "Blue Area", 2);
+    system.addDriver("Driver Ali", "Suzuki Alto", "KHI-789", "Clifton", 3);
+    system.addDriver("Driver Fatima", "Toyota Corolla", "LEA-234", "Liberty", 1);
+    system.addDriver("Driver Bilal", "Hyundai Elantra", "RWP-567", "Raja Bazaar", 4);
+    system.addDriver("Driver Zainab", "Honda Civic", "FSD-890", "Clock Tower", 5);
+    system.addDriver("Driver Karim", "Toyota Prius", "MUL-123", "Chowk Bazaar", 6);
+    system.addDriver("Driver Hira", "Suzuki Swift", "HFB-456", "City Center", 7);
+    system.addDriver("Driver Usman", "Honda Accord", "OKA-789", "Main Bazaar", 8);
+    system.addDriver("Driver Saira", "Toyota Yaris", "LEA-567", "DHA", 1);
 
-    // Zone 2: Tech and Business areas
-    system.addLocation("TechPark", 2);
-    system.addLocation("University", 2);
-
-    // Zone 3: Periphery areas
-    system.addLocation("Airport", 3);
-    system.addLocation("Hospital", 3);
-    system.addLocation("Suburb", 3);
-
-    std::cout << "[OK] Added 8 locations across 3 zones\n";
-
-    // Step 2: Add roads connecting locations logically
-    std::cout << "Setting up road network...\n";
-
-    // Zone 1 internal connections
-    system.addRoad("CityCenter", "Mall", 8);
-    system.addRoad("CityCenter", "RailwayStation", 6);
-    system.addRoad("Mall", "RailwayStation", 10);
-
-    // Zone 2 internal connections
-    system.addRoad("TechPark", "University", 12);
-
-    // Zone 3 internal connections
-    system.addRoad("Airport", "Hospital", 18);
-    system.addRoad("Hospital", "Suburb", 15);
-    system.addRoad("Airport", "Suburb", 22);
-
-    // Inter-zone connections
-    system.addRoad("CityCenter", "TechPark", 20);
-    system.addRoad("CityCenter", "Airport", 25);
-    system.addRoad("RailwayStation", "Airport", 28);
-    system.addRoad("Mall", "University", 5);
-    system.addRoad("TechPark", "Airport", 30);
-    system.addRoad("University", "Suburb", 35);
-    system.addRoad("RailwayStation", "Hospital", 32);
-
-    std::cout << "[OK] Road network established with 15 connections\n";
-
-    // Step 3: Add 5 drivers at different locations
-    std::cout << "Registering drivers...\n";
-    system.addDriver("Driver Ali", "Airport", 3);
-    system.addDriver("Driver Bob", "Mall", 1);
-    system.addDriver("Driver Charlie", "TechPark", 2);
-    system.addDriver("Driver Diana", "CityCenter", 1);
-    system.addDriver("Driver Eva", "Hospital", 3);
-
-    std::cout << "[OK] 5 drivers registered\n";
-    std::cout << "\n=== System Initialization Complete ===\n";
-    std::cout << "Ready to accept ride requests!\n\n";
+    std::cout << "[OK] Fleet registered successfully!\n\n";
 }
 
-// ===========================
-// Validation Functions
-// ===========================
-bool isValidLocation(const std::string &location)
+void displayMainMenu()
 {
-    // Check against all valid locations (Zone 1, 2, 3)
-    const std::vector<std::string> validLocations = {
-        "CityCenter", "Mall", "RailwayStation",
-        "TechPark", "University",
-        "Airport", "Hospital", "Suburb"};
-
-    for (const std::string &loc : validLocations)
-    {
-        if (loc == location)
-        {
-            return true;
-        }
-    }
-    return false;
+    std::cout << "\n=========================================\n";
+    std::cout << "   RIDE-SHARING SYSTEM - MAIN MENU\n";
+    std::cout << "=========================================\n";
+    std::cout << " 1. Book a Ride\n";
+    std::cout << " 2. View Trip Status\n";
+    std::cout << " 3. Cancel a Trip\n";
+    std::cout << " 4. Undo Last Action\n";
+    std::cout << " 5. Exit\n";
+    std::cout << "=========================================\n";
+    std::cout << "Enter your choice (1-5): ";
 }
 
-void displayValidLocations()
-{
-    std::cout << "\nValid locations:\n";
-    std::cout << "  Zone 1: CityCenter, Mall, RailwayStation\n";
-    std::cout << "  Zone 2: TechPark, University\n";
-    std::cout << "  Zone 3: Airport, Hospital, Suburb\n\n";
-}
-
-// ===========================
-// Interactive Menu Functions
-// ===========================
 void bookRide()
 {
     if (!g_system)
         return;
 
-    std::cout << "\n========== BOOK A RIDE ==========\n";
+    std::cout << "\n+---------- BOOKING SYSTEM ----------+\n";
 
-    // Step 1: Display registered riders
-    g_system->displayAllRiders();
+    // Step 1: Select pickup city
+    std::cout << "\nSTEP 1: Select Pickup City\n";
+    g_system->displayCities();
+    int pickupCityId;
+    std::cout << "Enter City Number: ";
+    std::cin >> pickupCityId;
+    std::cin.ignore();
 
+    const std::vector<CityInfo> &cities = g_system->getAllCities();
+    if (pickupCityId < 1 || pickupCityId > (int)cities.size())
+    {
+        std::cout << "[ERROR] Invalid city selection.\n";
+        return;
+    }
+
+    // Step 2: Select pickup location
+    std::cout << "\nSTEP 2: Select Pickup Location\n";
+    g_system->displayLocationsByCity(pickupCityId);
+    int pickupLocId;
+    std::cout << "Enter Location Number: ";
+    std::cin >> pickupLocId;
+    std::cin.ignore();
+
+    std::string pickupLocation = g_system->getLocationById(pickupCityId, pickupLocId);
+    if (pickupLocation.empty())
+    {
+        std::cout << "[ERROR] Invalid location selection.\n";
+        return;
+    }
+
+    // Step 3: Select dropoff city
+    std::cout << "\nSTEP 3: Select Dropoff City\n";
+    g_system->displayCities();
+    int dropoffCityId;
+    std::cout << "Enter City Number: ";
+    std::cin >> dropoffCityId;
+    std::cin.ignore();
+
+    if (dropoffCityId < 1 || dropoffCityId > (int)cities.size())
+    {
+        std::cout << "[ERROR] Invalid city selection.\n";
+        return;
+    }
+
+    // Step 4: Select dropoff location
+    std::cout << "\nSTEP 4: Select Dropoff Location\n";
+    g_system->displayLocationsByCity(dropoffCityId);
+    int dropoffLocId;
+    std::cout << "Enter Location Number: ";
+    std::cin >> dropoffLocId;
+    std::cin.ignore();
+
+    std::string dropoffLocation = g_system->getLocationById(dropoffCityId, dropoffLocId);
+    if (dropoffLocation.empty())
+    {
+        std::cout << "[ERROR] Invalid location selection.\n";
+        return;
+    }
+
+    if (pickupLocation == dropoffLocation)
+    {
+        std::cout << "[ERROR] Pickup and dropoff must be different!\n";
+        return;
+    }
+
+    // Step 5: Show available drivers and select one
+    std::cout << "\nSTEP 5: Select Driver\n";
+    g_system->displayAvailableDrivers();
+
+    int driverChoice;
+    std::cout << "Enter Driver Number (1-10): ";
+    std::cin >> driverChoice;
+    std::cin.ignore();
+
+    Driver *selectedDriver = g_system->getDriverById(driverChoice);
+    if (!selectedDriver)
+    {
+        std::cout << "[ERROR] Invalid driver selection or driver not available.\n";
+        return;
+    }
+
+    // Step 6: Create rider and request trip
+    std::cout << "\nEnter Rider Name: ";
     std::string riderName;
-    std::cout << "Enter rider name: ";
     std::getline(std::cin, riderName);
 
     if (riderName.empty())
@@ -128,66 +141,50 @@ void bookRide()
         return;
     }
 
-    // Step 2: Display valid locations
-    g_system->displayAllLocations();
-
-    std::string pickupLocation;
-    std::cout << "Enter pickup location: ";
-    std::getline(std::cin, pickupLocation);
-
-    if (!isValidLocation(pickupLocation))
-    {
-        std::cout << "[ERROR] Location '" << pickupLocation << "' not found.\n";
-        displayValidLocations();
-        return;
-    }
-
-    std::string dropoffLocation;
-    std::cout << "Enter dropoff location: ";
-    std::getline(std::cin, dropoffLocation);
-
-    if (!isValidLocation(dropoffLocation))
-    {
-        std::cout << "[ERROR] Location '" << dropoffLocation << "' not found.\n";
-        displayValidLocations();
-        return;
-    }
-
-    if (pickupLocation == dropoffLocation)
-    {
-        std::cout << "[ERROR] Pickup and dropoff locations must be different.\n";
-        return;
-    }
-
-    // Step 3: Create rider and request trip
     Rider *rider = g_system->addRider(riderName, pickupLocation);
-    g_riders.push_back(rider);
-
     Trip *trip = g_system->requestTrip(rider, pickupLocation, dropoffLocation);
 
-    if (trip)
-    {
-        std::cout << "\n==============================\n";
-        std::cout << "[OK] Trip #" << trip->getId() << " booked successfully!\n";
-        std::cout << "  Rider: " << riderName << "\n";
-        std::cout << "  Route: " << pickupLocation << " -> " << dropoffLocation << "\n";
-        std::cout << "  Status: " << trip->getStateString() << "\n";
-
-        if (trip->getDriver())
-        {
-            std::cout << "  Driver: " << trip->getDriver()->getName() << "\n";
-            std::cout << "  Zone: " << trip->getDriver()->getZoneID() << "\n";
-        }
-        else
-        {
-            std::cout << "  [WARNING] No drivers available\n";
-        }
-        std::cout << "==============================\n\n";
-    }
-    else
+    if (!trip)
     {
         std::cout << "[ERROR] Failed to create trip.\n";
     }
+}
+
+void viewTripStatus()
+{
+    if (!g_system)
+        return;
+
+    const std::vector<Trip *> &trips = g_system->getAllTrips();
+
+    if (trips.empty())
+    {
+        std::cout << "\n[INFO] No trips available.\n";
+        return;
+    }
+
+    std::cout << "\n=============== TRIP STATUS ===============\n";
+    std::cout << "ID | Rider        | From    | To      | Driver | Status\n";
+    std::cout << "---+--------------+---------+---------+--------+----------\n";
+
+    for (const Trip *trip : trips)
+    {
+        const char *driverName = "None";
+        if (trip->getDriver())
+        {
+            driverName = trip->getDriver()->getName().c_str();
+        }
+
+        printf("%2d | %-12s | %-7s | %-7s | %-6s | %s\n",
+               trip->getId(),
+               trip->getRider()->getName().c_str(),
+               trip->getPickup().c_str(),
+               trip->getDropoff().c_str(),
+               driverName,
+               trip->getStateString().c_str());
+    }
+
+    std::cout << "==========================================\n\n";
 }
 
 void cancelTrip()
@@ -195,141 +192,86 @@ void cancelTrip()
     if (!g_system)
         return;
 
-    std::cout << "\n--- Cancel a Trip ---\n";
+    const std::vector<Trip *> &trips = g_system->getAllTrips();
 
-    const std::vector<Trip *> &allTrips = g_system->getAllTrips();
-
-    if (allTrips.empty())
+    if (trips.empty())
     {
-        std::cout << "[ERROR] No trips available to cancel.\n";
+        std::cout << "\n[ERROR] No trips available to cancel.\n";
         return;
     }
 
-    std::cout << "\nActive Trips:\n";
-    for (const Trip *trip : allTrips)
+    std::cout << "\n===== ACTIVE TRIPS =====\n";
+    int activeCount = 0;
+    for (const Trip *trip : trips)
     {
-        std::cout << "  Trip #" << trip->getId() << ": " << trip->getRider()->getName()
-                  << " (" << trip->getPickup() << " -> " << trip->getDropoff() << ") "
-                  << "Status: " << trip->getStateString() << "\n";
-    }
-
-    int tripId;
-    std::cout << "\nEnter trip ID to cancel: ";
-    std::cin >> tripId;
-    std::cin.ignore();
-
-    // Find trip by ID (linear search, no STL map)
-    Trip *selectedTrip = nullptr;
-    for (Trip *trip : allTrips)
-    {
-        if (trip->getId() == tripId)
+        if (trip->getStatus() != CANCELLED && trip->getStatus() != COMPLETED)
         {
-            selectedTrip = trip;
-            break;
-        }
-    }
-
-    if (!selectedTrip)
-    {
-        std::cout << "[ERROR] Trip #" << tripId << " not found.\n";
-        return;
-    }
-
-    g_system->cancelTrip(selectedTrip);
-    std::cout << "[OK] Trip #" << tripId << " has been cancelled.\n";
-}
-
-void undoLastAction()
-{
-    if (!g_system)
-        return;
-
-    std::cout << "\n--- Undo Last Action ---\n";
-    bool success = g_system->undoLastAction();
-
-    if (!success)
-    {
-        std::cout << "[ERROR] No actions to undo.\n";
-    }
-}
-
-void viewSystemStatus()
-{
-    if (!g_system)
-        return;
-
-    std::cout << "\n========== SYSTEM STATUS ==========\n";
-
-    const std::vector<Trip *> &allTrips = g_system->getAllTrips();
-
-    // Display active trips
-    std::cout << "\n--- ACTIVE TRIPS ---\n";
-    if (allTrips.empty())
-    {
-        std::cout << "[INFO] No active trips.\n";
-    }
-    else
-    {
-        std::cout << "ID | Rider            | Pickup to Dropoff       | Status     | Driver\n";
-        std::cout << "---+------------------+-------------------------+------------+----------------\n";
-        for (const Trip *trip : allTrips)
-        {
-            std::string status = trip->getStateString();
-            std::string driverName = trip->getDriver() ? trip->getDriver()->getName() : "Unassigned";
-
-            printf("%2d | %-16s | %-13s to %-7s | %-10s | %s\n",
+            printf(" %d. Trip #%d: %s (%s)\n",
+                   ++activeCount,
                    trip->getId(),
                    trip->getRider()->getName().c_str(),
-                   trip->getPickup().c_str(),
-                   trip->getDropoff().c_str(),
-                   status.c_str(),
-                   driverName.c_str());
+                   trip->getStateString().c_str());
         }
     }
 
-    // Display driver stats
-    g_system->displayDriverStats();
+    if (activeCount == 0)
+    {
+        std::cout << "[INFO] No active trips to cancel.\n";
+        return;
+    }
 
-    std::cout << "=====================================\n\n";
+    std::cout << "========================\n";
+    int tripChoice;
+    std::cout << "Enter Trip Number to Cancel: ";
+    std::cin >> tripChoice;
+    std::cin.ignore();
+
+    activeCount = 0;
+    for (Trip *trip : trips)
+    {
+        if (trip->getStatus() != CANCELLED && trip->getStatus() != COMPLETED)
+        {
+            activeCount++;
+            if (activeCount == tripChoice)
+            {
+                g_system->cancelTrip(trip);
+                return;
+            }
+        }
+    }
+
+    std::cout << "[ERROR] Invalid trip selection.\n";
 }
 
-void displayMainMenu()
+void undoAction()
 {
-    std::cout << "\n==========================================\n";
-    std::cout << "     RIDE-SHARING SYSTEM MENU\n";
-    std::cout << "==========================================\n";
-    std::cout << "1. Book a Ride\n";
-    std::cout << "2. Cancel a Trip\n";
-    std::cout << "3. Undo Last Action\n";
-    std::cout << "4. View System Status\n";
-    std::cout << "5. Exit\n";
-    std::cout << "==========================================\n";
-    std::cout << "Enter your choice (1-5): ";
+    if (!g_system)
+        return;
+
+    std::cout << "\n";
+    g_system->undoLastAction();
 }
 
-// ===========================
-// Main Function
-// ===========================
 int main()
 {
     std::cout << "\n=========================================\n";
-    std::cout << "  RIDE-SHARING DISPATCH & TRIP SYSTEM\n";
-    std::cout << "  Pre-Loaded Data + Interactive Menu\n";
+    std::cout << "  RIDE-SHARING SYSTEM - PAKISTAN\n";
+    std::cout << "     Numerical Input Based Booking\n";
     std::cout << "=========================================\n";
 
-    // Create system and setup
     RideShareSystem system;
     g_system = &system;
 
-    setupSystem(system);
+    // Initialize Pakistani cities and fleet
+    system.setupPakistaniCities();
+    setupFleet(system);
 
-    // Interactive menu loop
     int choice = 0;
     while (true)
     {
         displayMainMenu();
         std::cin >> choice;
-        std::cin.ignore(); // Clear input buffer
+        std::cin.ignore();
 
         switch (choice)
         {
@@ -338,23 +280,22 @@ int main()
             break;
 
         case 2:
-            cancelTrip();
+            viewTripStatus();
             break;
 
         case 3:
-            undoLastAction();
+            cancelTrip();
             break;
 
         case 4:
-            viewSystemStatus();
+            undoAction();
             break;
 
         case 5:
             std::cout << "\n=========================================\n";
-            std::cout << "  Thank you for using Ride-Sharing!\n";
-            std::cout << "  Final System Summary:\n";
-            std::cout << "  - Total Trips: " << system.getAllTrips().size() << "\n";
-            std::cout << "  - Total Drivers: " << system.getAllDrivers().size() << "\n";
+            std::cout << "  Thank you for using our service!\n";
+            std::cout << "       Total Trips: " << system.getAllTrips().size() << "\n";
+            std::cout << "       Total Drivers: " << system.getAllDrivers().size() << "\n";
             std::cout << "=========================================\n\n";
             return 0;
 
