@@ -68,8 +68,11 @@ public:
     const std::vector<Rider *> &getAllRiders() const;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     const std::vector<CityInfo> &getAllCities() const;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     void bookRide(int pickupCityId, int pickupLocationId, int dropoffCityId, int dropoffLocationId, int driverId);

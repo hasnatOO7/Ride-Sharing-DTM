@@ -8,9 +8,12 @@
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Trip::Trip(int id, Rider *rider, const std::string &pickup, const std::string &dropoff)
     : id(id), rider(rider), driver(nullptr), pickup(pickup), dropoff(dropoff), status(REQUESTED), fare(0.0), city(nullptr) {}
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 Trip::Trip(int id, Rider *rider, const std::string &pickup, const std::string &dropoff, int driverId) : id(id), rider(rider), driver(nullptr), pickup(pickup), dropoff(dropoff), status(REQUESTED){} : rider(rider), driverId(driverId), driver(nullptr)
